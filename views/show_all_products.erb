@@ -1,0 +1,20 @@
+My Products  <br /><br />
+<% for p in @products %>
+  <a href ="/show_product/<%= p['url'] %>"><%= p['name'] %></a> &nbsp;
+  &nbsp;
+  &nbsp;
+
+  
+<% end %>
+
+ <br /><br />
+Don't see any products?  Add one yourself! <br /><br />
+
+<form action='/create_product' method='post' >
+  <label for="product_name"></label>Product Name<input name='name' type="text"> <br/>
+  <label for="product_description"></label>Product Description<input name='description' type="text_field"><br/>
+  <label for="product_price_cents">Product Price in cents</label><input name='price_cents' type="text"><br/>
+  <label for="product_quantity">Product Quantity</label><input name='quantity' type="text"><br/>
+  
+  <input type="submit" value="Save Changes">
+</form>
