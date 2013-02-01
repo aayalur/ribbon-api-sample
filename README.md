@@ -10,7 +10,8 @@ To run the application:
 4. Put "http://localhost:4567" for the main application URL and "http://localhost:4567/auth/callback" for the callback URL.  Name it whatever you like.
 5. Take the Consumer Key and Consumer Secret and place them into the variables at the top of app.rb
 6. Install the gems listed in the Gemfile with a "bundle install"
-7. Run "ruby app.rb" in your terminal
-8. Navigate to http://localhost:4567/ in your browser.
-9. Try adding and deleting some products
-10. Enjoy!
+7. Install the sinatra contrib gem with a "gem install sinatra-contrib"
+8. Run "ruby app.rb" in your terminal
+9. Navigate to http://localhost:4567/ in your browser.
+10. Try adding and deleting some products
+11. Enjoy!
