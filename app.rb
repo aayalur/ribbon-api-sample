@@ -5,17 +5,22 @@ require "sinatra/base"
 require "sinatra/reloader"
 
 enable :sessions
-CONSUMER_KEY = "PUT_YOURS_HERE"
-CONSUMER_SECRET = "PUT_YOURS_HERE"
+CONSUMER_KEY = ""
+CONSUMER_SECRET = ""
 def client
   OAuth2::Client.new(CONSUMER_KEY, CONSUMER_SECRET, :site => "https://www.ribbon.co")
 end
 
 get "/" do
-  if session[:access_token].nil? # || In a more mature version, we would test to see if the token is still valid.  If not, then authorize the user again.
+  if session[:access_token].nil? # || In a more mature version, we would test to see if the token is still valid.  If not, then authorize the user again.  
     redirect '/authorize_user'
   else
-    redirect '/show_products'
+    begin 
+      test_token_validity
+      redirect '/show_products'
+    rescue
+      redirect '/authorize_user'
+    end
   end
 end
 
@@ -27,7 +32,6 @@ get '/auth/callback' do
   access_token = client.auth_code.get_token(params[:code], :redirect_uri => redirect_uri)
   session[:access_token] = access_token.token
   # Make sure to save your token and associate it with the relevant user.
-  # you can get multiple access tokens if you authenticate multiple times
   @message = "Successfully authenticated with the server"
   @header = "Congratulations"
   erb :display_response
@@ -48,6 +52,11 @@ end
 post '/create_product' do
   @message = post_response('products.json',params)
   redirect '/show_products'
+end
+
+def test_token_validity
+  access_token = OAuth2::AccessToken.new(client, session[:access_token])
+  JSON.parse(access_token.get("/api/v1/token_valid").body)
 end
 
 def get_response(url)
